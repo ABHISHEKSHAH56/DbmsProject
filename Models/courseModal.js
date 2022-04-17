@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const courseSchema = new mongoose.Schema({
     facultyId:{
      type:mongoose.Schema.ObjectId,
-     ref:"faculty",
+     ref:"Faculty",
      require :true
     },
     students:[
@@ -23,6 +23,10 @@ const courseSchema = new mongoose.Schema({
      batch:{
       type:String,
       required:[true,"Please enter the batch name"]
+     },
+     courseDescription:{
+      type:String,
+      required:[true,"Please enter the courseDescription"]
      },
      createdBy:{
       type:mongoose.Schema.ObjectId,

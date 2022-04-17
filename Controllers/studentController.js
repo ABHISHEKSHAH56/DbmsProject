@@ -6,17 +6,18 @@ const User = require("../Models/userModel");
 module.exports = {
     register:async(req,res,next)=>{
         try {
-            const {name,rollNumber,batch,department}=req.body;
+            const {rollNumber,batch,department}=req.body;
             const student = await Student.findOne({ rollNumber })
             if (student) {
                 throw createHttpError.BadRequest("Student already register");
             }
+            const name= req.user.firstName+" "+ req.user.lastName;
             const saved =await Student.create({
-                name,
+                name,                
                 rollNumber,
                 batch,
                 department,
-                studentId:req.user.id
+                studentId:req.user._id
             })
             const updateUser=await User.updateOne({
                 _id:req.user.id},{
@@ -37,7 +38,7 @@ module.exports = {
     },
     updateStudent:async(req,res,next)=>{
         try {
-            const update=await Student.updateOne({studentId:req.user._id},{$set:req.body})
+            const update=await Student.updateOne({studentId:req.params.studentId},{$set:req.body})
             res.send("Data updated Succesfully ");
 
         } catch (error) {
@@ -72,13 +73,14 @@ module.exports = {
             //user batch must be same as course batch else they cant join 
             const course=await courseModal.findOne({_id: req.params.courseId});
             if(!course) throw createHttpError.BadRequest("Course Not Found ");
-            const {batch}=await Student.findOne({studentId:req.user._id});
-            if(batch!==course.batch) throw createHttpError.Unauthorized("You are not authorized to join this course");
+            const data=await Student.findOne({studentId:req.user._id});
+            console.log(course,data.batch)
+            if(data.batch!==course.batch) throw createHttpError.Unauthorized("You are not authorized to join this course");
             //add the user id in course 
             const students=course.students;
-            if(students.includes(req.user._id)) throw createHttpError.BadRequest("Student Already registered for that course ")
+            if(students.includes(data._id)) throw createHttpError.BadRequest("Student Already registered for that course ")
             await courseModal.updateOne({_id:req.params.courseId},{$set:{
-                students:[...students,req.user.id]
+                students:[...students,data._id]
             }});
             res.status(200).send("Student Added Successfully");
 
@@ -89,9 +91,36 @@ module.exports = {
         }
     },
     removefromcourse:async(req,res,next)=>{
+        try {
+            
+            //user batch must be same as course batch else they cant join 
+            const course=await courseModal.findOne({_id: req.params.courseId});
+            if(!course) throw createHttpError.BadRequest("Course Not Found ");
+            const students=course.students;
+            if(!students.includes(req.user._id)) throw createHttpError.BadRequest("you already removed from course  ")
+            await courseModal.updateOne({_id:req.params.courseId},{$set:{
+                students:[...(students.filter((item)=>item!==req.user._id))]
+            }});
+            res.status(200).send("Student removed Successfully");
+
+            
+        } catch (error) {
+            next(error)
+            
+        }
 
 
     },
+    getdeatilsofcourse:async(req,res,next)=>{
+        try {
+            const course = await courseModal.findById(req.params.courseId).populate({ path: 'students' })
+            res.send(course)
+            
+        } catch (error) {
+            next(error)
+            
+        }
+    }
     
 
 

@@ -7,12 +7,15 @@ module.exports = {
     //teacher will create thier course own 
     register:async(req,res,next)=>{
         try {
-            const {courseName,department,batch}=req.body;
+            const {courseName,department,batch,courseDescription}=req.body;
+            const data=await Faculty.findOne({facultyId:req.user._id})
+            console.log(data)
             const saved =await Course.create({
-                facultyId:req.user._id,
+                facultyId:data._id,
                 batch,
                 courseName,
                 department,
+                courseDescription,
                 createdBy:req.user._id
             })    
             res.status(200).send({
@@ -26,11 +29,40 @@ module.exports = {
 
     },
     //of particular course 
-    detailsofcourse:async(req,res,next)=>{
+    getCourseDetails:async(req,res,next)=>{
         try {
-
-
+            
             //we need to render who is student name and teacher name  course and assigment list associated with
+            
+        } catch (error) {
+            
+        }
+    },
+    fetchcoursebyfaculty:async(req,res,next)=>{
+        try {
+            const course=await Course.find({createdBy:req.user._id}).populate({ path: 'facultyId', select: 'facultyName' });
+            res.send(course);
+            
+        } catch (error) {
+            next(error)
+            
+        }
+    },
+    DeleteCourse:async(req,res,next)=>{
+        try {
+            const {courseId}=req.params
+            const iscourse=await Course.findById(courseId);
+            if(!iscourse) throw createHttpError.BadRequest("course already deleted")
+            const data= await Course.deleteOne({_id:courseId});
+            res.send("Course deleted successfully ");
+            
+        } catch (error) {
+            next(error)
+            
+        }
+    },
+    updateCourse:async(req,res,next)=>{
+        try {
             
         } catch (error) {
             

@@ -6,11 +6,12 @@ const router = express.Router()
 
 
 router.post("/register",verifyAccessToken,authCheck,StudentController.register)
+router.patch("/:studentId",verifyAccessToken,authCheck,StudentController.updateStudent)
 router.get("/listAssociatedcourse",verifyAccessToken,authCheck,StudentController.listAssociatedcourse)
 
 
 //student can join the course by self and remove from course 
 
 router.get("/course/join/:courseId",verifyAccessToken,authCheck,StudentController.joincourse)
-
+router.get("/course/:courseId",verifyAccessToken,authCheck,StudentController.getdeatilsofcourse)
 module.exports = router
