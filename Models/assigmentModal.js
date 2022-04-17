@@ -6,12 +6,6 @@ const submissionSchema =new mongoose.Schema({
       ref:"User",
       require :true  
     },
-    assigmentId:{
-      type:mongoose.Schema.ObjectId,
-      ref:"Assigment",
-      require :true
-  
-    },
     status:{
       type:String,
       enum:["Missing","Assign","Turn Late ","Submitted"],
@@ -42,7 +36,7 @@ const submissionSchema =new mongoose.Schema({
         type: Date,
         required:[true,"Please enter the deadline"]
       },       
-      course:{
+      courseId:{
           type:mongoose.Schema.ObjectId,
           ref:"Course",
           require :true  
@@ -70,7 +64,12 @@ const submissionSchema =new mongoose.Schema({
         type:String
       },
       submissionDetails:[submissionSchema],
+      createdBy:{
+        type:mongoose.Schema.ObjectId,
+        ref:"User",
+        require :true 
+      }
   },{timestamps: true});
   
-
-module.exports = mongoose.model("Assigment", assigmentSchema);
+const Assigment=mongoose.model("Assigment", assigmentSchema);
+module.exports = Assigment

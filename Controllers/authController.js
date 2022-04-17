@@ -11,12 +11,13 @@ const crypto= require('crypto')
 module.exports = {
   register: async (req, res, next) => {
     try {
-      const { name, email, password,image } = req.body;
+      const { firstName,lastName, email, password,image } = req.body;
       const doesExist = await User.findOne({ email:email })
       if (doesExist)
         throw createError.Conflict(`${email} is already been registered`)
       const user = await User.create({
-        name,
+        firstName,
+        lastName,
         email,
         password,
         avatar: {

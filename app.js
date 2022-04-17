@@ -19,8 +19,8 @@ cloudinary.config({
   api_key: '456545845563234', 
   api_secret: '_hlOWNSv8H2PFOtSm1p6e4ZMieE' 
 });
-
-app.use(cors())
+var  corsOptions  = { origin: 'http://localhost:3000',credentials: true, maxAge: '1728000' } // this item is set specifically for cross-domain purposes 
+app.use(cors(corsOptions))
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json());
