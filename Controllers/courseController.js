@@ -63,8 +63,14 @@ module.exports = {
     },
     updateCourse:async(req,res,next)=>{
         try {
+            const {courseId}=req.params
+            const iscourse=await Course.findById(courseId);
+            if(!iscourse) throw createHttpError.BadRequest("course Not found")
+            const save=await Course.updateOne({_id:courseId},{$set:req.body});
+            res.send(save);
             
         } catch (error) {
+            next(error)
             
         }
     }
