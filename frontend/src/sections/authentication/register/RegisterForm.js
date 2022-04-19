@@ -1,8 +1,7 @@
 import * as Yup from 'yup';
 import * as React from 'react';
-import { useState } from 'react';
+import { useState} from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useNavigate } from 'react-router-dom';
 // material
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -15,11 +14,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
+import { useAlert } from 'react-alert';
+import { authContext } from 'src/hooks/AuthContext';
 // ----------------------------------------------------------------------
 
 export default function RegisterForm({open, setOpen,setRegister}) {
-  const navigate = useNavigate();
+  
+  const { setAuthData } = React.useContext(authContext);
+  const alert = useAlert();
   
   const [showPassword, setShowPassword] = useState(false);
 
@@ -41,14 +43,17 @@ export default function RegisterForm({open, setOpen,setRegister}) {
       password: ''
     },
     validationSchema: RegisterSchema,
+    
     onSubmit: async() => {
-      console.log(formik.values);
       await SignUp(formik.values).then((res)=>{
-        console.log(res)
-        setOpen(true)
-      }).catch((err)=>console.log(err.response.data.error));
-
-     
+        localStorage.setItem("accessToken", res.data.accessToken);
+        setAuthData(res.data.user);
+        setOpen(true) 
+      }).catch((error)=>
+      {
+       const {data} =error.response;
+       alert.error(data.error.message)
+      })     
     }
   });
 

@@ -1,4 +1,5 @@
 const express = require('express')
+const assigmentController = require('../Controllers/assigmentController')
 const StudentController = require('../Controllers/studentController')
 const { authCheck } = require('../helpers/authHelper')
 const { verifyAccessToken } = require('../helpers/jwt_helper')
@@ -14,4 +15,5 @@ router.get("/listAssociatedcourse",verifyAccessToken,authCheck,StudentController
 
 router.get("/course/join/:courseId",verifyAccessToken,authCheck,StudentController.joincourse)
 router.get("/course/:courseId",verifyAccessToken,authCheck,StudentController.getdeatilsofcourse)
+router.post("/assigment/submission/:assigmentId",verifyAccessToken,authCheck,assigmentController.submittheAssigment)
 module.exports = router

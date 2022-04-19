@@ -23,7 +23,7 @@ export default function ImgMediaCard({data}) {
           {data.courseName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-         {data.courseDescription} 
+         {data.courseDescription.substr(0,151)}.... 
         </Typography>
         <Typography variant="body1" color="text.warning">
           {data.facultyId.facultyName}
@@ -48,11 +48,11 @@ export default function ImgMediaCard({data}) {
       <CardActions>
         <Button size="small"
            component={RouterLink}
-            to="/student/1"  >Student</Button>
+            to={`/student/${data._id}`}  >Student</Button>
         <Button 
           size="small"
           component={RouterLink}
-          to="/assigment/1"
+          to={`/assigment/${data._id}`}
           
         >
           Assigment

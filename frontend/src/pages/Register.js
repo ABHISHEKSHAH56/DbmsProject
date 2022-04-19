@@ -8,7 +8,6 @@ import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
 import { RegisterForm } from '../sections/authentication/register';
-import AuthSocial from '../sections/authentication/AuthSocial';
 import StudentForm from 'src/sections/authentication/register/StudentRegister';
 import FacultyForm from 'src/sections/authentication/register/facultyRegisteration';
 
@@ -73,8 +72,8 @@ export default function Register() {
          
 
           {
-            !(register.faculty || register.student)==true ? <RegisterForm open={open} setOpen={setopen} setRegister={setRegister} />:
-            register.student ==true? <StudentForm />: <FacultyForm /> 
+            !(register.faculty || register.student)===true ? <RegisterForm open={open} setOpen={setopen} setRegister={setRegister} />:
+            register.student===true? <StudentForm />: <FacultyForm /> 
           }
 
           <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>

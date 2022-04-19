@@ -14,11 +14,14 @@ import StudentForm from './sections/authentication/register/StudentRegister';
 import Registeration2 from './pages/Registeration2';
 import Course from './pages/Course/Course';
 import CourseStudent from './pages/CourseStudent';
-import CourseAssigment from './pages/CourseAssigment';
+import CourseAssigment from './pages/Assigment/CourseAssigment';
 import AssigmentStudentTable from './pages/AssigmentListSubmission';
 import { useMemo } from 'react';
 import Assigment from './pages/Assigment';
 import Student from './pages/Students';
+import StudentList from './pages/Students/StudentList';
+import Submiteddashboard from './pages/Assigment/Submiteddashboard';
+import AssigmentSubmission from './pages/Assigment/SubmitAssigment';
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +36,9 @@ const teacherRoute={
     { path: 'student', element: <Student /> },
     {path: 'assigment/:courseId', element: <CourseAssigment />},
     {path: 'assigment/:courseId/:assigmentId', element: <AssigmentStudentTable />},
-    {path: 'student/:courseId', element: <CourseStudent />},
+    {path: 'assigment/details/:assigmentId', element: <Submiteddashboard />},
+    {path: 'assigment/submission/:assigmentId', element: <AssigmentSubmission />},
+    {path: 'student/:courseId', element: <StudentList  />},
     { path: '404', element: <NotFound /> },
     { path: '*', element: <Navigate to="/404"  /> }
   ]

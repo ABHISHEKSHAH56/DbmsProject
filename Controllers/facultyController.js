@@ -11,15 +11,17 @@ module.exports = {
                 department,
                 facultyId:req.user.id
             })
-            const updateUser=await User.updateOne({
+            await User.updateOne({
                 _id:req.user.id},{
                     $set:{
                         role:"faculty"
                     }    
             })
+            const user=await  User.findById(req.user._id)
+
             res.status(200).send({
                 saved,
-                updateUser
+                user
             })
             
         } catch (error) {

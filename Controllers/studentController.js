@@ -25,9 +25,10 @@ module.exports = {
                         role:"student"
                     }    
             })
+            const user=await User.findById(req.user._id)
             res.status(200).send({
                 saved,
-                updateUser
+                user
             })
             
         } catch (error) {

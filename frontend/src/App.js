@@ -1,8 +1,7 @@
 // routes
 import Router from './routes';
-import React from 'react'
+import React, { useEffect, useState,useContext } from 'react'
 // theme
-import react ,{ useContext } from 'react'
 
 import { authContext } from './hooks/AuthContext';
 import { Navigate } from 'react-router-dom';
@@ -10,7 +9,12 @@ import { Navigate } from 'react-router-dom';
 
 export default function App() {
   const { auth } = useContext(authContext);
-  const {loading}=auth
+  const [data, setdata] = useState(auth)
+  useEffect(() => {
+    setdata(auth)
+  }, [auth])
+  
+  const {loading}=data
   if(loading)
   {
     return <p>loading......</p>
@@ -18,16 +22,16 @@ export default function App() {
   
   
 
-  if (auth.data===null) {
+  if (data.data===null) {
     return (
       
       <Navigate to="/login" />
    
     );
   }
-  console.log(auth.data.role)
+  console.log(data.data.role)
   return (
     
-      <Router role={auth.data.role} />
+      <Router role={data.data.role} />
   );
 }

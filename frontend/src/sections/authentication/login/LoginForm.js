@@ -1,10 +1,9 @@
 import * as Yup from 'yup';
 import { useState ,useContext} from 'react';
-import { Link as RouterLink, Navigate, useNavigate } from 'react-router-dom';
+import { Link as RouterLink,  useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import  { authContext } from '../../../hooks/AuthContext';
 // material
-import {useDispatch} from 'react-redux'
 import {
   Link,
   Stack,
@@ -18,6 +17,7 @@ import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../../../components/Iconify';
 import { LogIn } from '../../../API/index'
+import { useAlert } from 'react-alert';
 
 
 // ----------------------------------------------------------------------
@@ -25,9 +25,9 @@ import { LogIn } from '../../../API/index'
 export default function LoginForm() {
   const navigate = useNavigate();
   const { setAuthData } = useContext(authContext);
+  const alert = useAlert();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch()
+  const [showPassword, setShowPassword] = useState(false); 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required')
@@ -45,10 +45,12 @@ export default function LoginForm() {
        localStorage.setItem("accessToken", res.data.accessToken);
        setAuthData(res.data.user);
        navigate("/");
+       alert.success("Login Successfully ")
       
      }).catch((error)=>
      {
-       console.log(error.response.data)
+      const {data} =error.response;
+      alert.error(data.error.message)
      })
 
       

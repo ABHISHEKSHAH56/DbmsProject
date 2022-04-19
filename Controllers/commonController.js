@@ -1,3 +1,4 @@
+const Assigment = require("../Models/assigmentModal");
 const courseModal = require("../Models/courseModal");
 const facultyModel = require("../Models/facultyModel");
 const studentModal = require("../Models/studentModal");
@@ -36,7 +37,7 @@ module.exports = {
     },
     allAssigment:async(req,res,next) =>{
         try {
-            const saved=await studentModal.find();
+            const saved=await Assigment.find();
             res.send(saved);
         } catch (error) {
             next(error);
@@ -53,7 +54,16 @@ module.exports = {
             
         }
 
+    },
+    ListOfcourseAssigment:async(req,res,next)=>{
+        try {
+            const data=await Assigment.find({courseId:req.params.courseId});
+            res.send({assigmentData:data})
+        } catch (error) {
+            next(error)
+        }
     }
+    
 
 
 }

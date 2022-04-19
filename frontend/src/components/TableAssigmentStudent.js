@@ -15,8 +15,9 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { Chip, TableHead } from '@mui/material';
+import { Chip, TableHead ,Button} from '@mui/material';
 import Label from './Label';
+import Moment from 'react-moment';
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -79,32 +80,20 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, rollNumber,material,status,submitAt ) {
-  return { name, rollNumber,material,status,submitAt };
-}
-
-const rows = [
-  createData('Abhishek','CSE/19004/431', '2019-2023',"active","12 jan 2019"),
-  createData('Abhishek','CSE/19004/431', '2019-2023',"Late","12 jan 2019"),
-  createData('Abhishek','CSE/19004/431', '2019-2023',"active","12 jan 2019"),
-  createData('Abhishek','CSE/19004/431', '2019-2023',"active","12 jan 2019"),,
-  createData('Abhishek','CSE/19004/431', '2019-2023',"active","12 jan 2019"),
-  createData('Abhishek','CSE/19004/431', '2019-2023',"active","12 jan 2019"),
-  createData('Abhishek','CSE/19004/431', '2019-2023',"active","12 jan 2019")
 
 
 
 
-
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
-
-export default function TableAssigmentStudent() {
+export default function TableAssigmentStudent({data}) {
+    
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  
+  console.log(data)
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -145,27 +134,29 @@ export default function TableAssigmentStudent() {
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
+            ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : data
           ).map((row,index) => (
             <TableRow key={row.name}>
               <TableCell align="left"  >
                 {index+1}
               </TableCell>
               <TableCell align="left"  >
-                {row.name}
+                {row.student.name}
               </TableCell>
               <TableCell  align="center">
-                {row.rollNumber}
+                {row.student.rollNumber}
               </TableCell>
               <TableCell  align="center">
-                <Chip label={row.status} />
+                <Chip label={row.status} color={row.status=="Submitted"? "success":"error"} />
               </TableCell>
               <TableCell  align="center">
-                {row.submitAt}
+               <Moment local >
+               {row.updatedAt}
+                 </Moment> 
               </TableCell>
               <TableCell  align="center">
-                {row.material}
+                <a href={row.data[0].url} target="_blank"><Button>Download</Button></a>
               </TableCell>
             </TableRow>
           ))}
@@ -182,7 +173,7 @@ export default function TableAssigmentStudent() {
              
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={3}
-              count={rows.length}
+              count={data.length}
               rowsPerPage={rowsPerPage}
               page={page}
               SelectProps={{

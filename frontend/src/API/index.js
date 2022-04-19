@@ -63,10 +63,25 @@ export const LogIn = async (formdata) => await API.post('/auth/login', formdata)
 export const authCheck = async () => await Protected.get("/")
 export const logout = async () => await Protected.get("/auth/logout")
 
+//student registeration 
+export const StudentRegister = async (formdata) => await Protected.post('/student/register', formdata)
+//faculty Registeration 
+export const FacultyRegister = async (formdata) => await Protected.post('/faculty/register', formdata)
 
+export const fetchallcourse=async()=>await API.get("/all/course")
 export const fetchCourse=async() =>await Protected.get("/faculty/course/fetch")
 export const createCourse=async(data) =>await Protected.post("/faculty/course/create",data)
 export const deleteCourse=async(id)=>await Protected.delete(`/faculty/course/${id}`)
 export const updateCourse=async(id)=>await Protected.patch(`/faculty/course/${id}`)
 export const detailsCourse=async(id)=>await Protected.get(`/faculty/course/${id}`)
+
+
+//assigment
+
+export const createAssigment=async(data,id) =>await Protected.post(`/faculty/${id}/assigment/create`,data)
+export const fetchAllAssigmen=async(id) =>await Protected.get(`/all/assigment/${id}`)
+export const detailsAssigment=async(id)=>await Protected.get(`/faculty/assigment/details/${id}`)
+
+//sumit the assigment
+export const submitAssigment=async(data,id)=>await Protected.post(`/student/assigment/submission/${id}`,data)
 

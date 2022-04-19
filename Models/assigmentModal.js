@@ -3,15 +3,15 @@ const mongoose = require("mongoose");
 const submissionSchema =new mongoose.Schema({
     student:{
       type:mongoose.Schema.ObjectId,
-      ref:"User",
+      ref:"Student",
       require :true  
     },
     status:{
       type:String,
       enum:["Missing","Assign","Turn Late ","Submitted"],
-      default:"Assign"  
+      default:"Submitted"  
     },
-    data:{
+    data:[{
       public_id: {
         type: String,
         required: true,
@@ -21,7 +21,7 @@ const submissionSchema =new mongoose.Schema({
         required: true,
       }
   
-    },    
+    }],    
     marks:Number
   },{timestamps: true})
   
@@ -50,16 +50,21 @@ const submissionSchema =new mongoose.Schema({
         type:String,
         required:[true,"Please enter the title "]
       },
-      material:{
-        public_id: {
-          type: String,
-          required: true,
-        },
-        url: {
-          type: String,
-          required: true,
+      material:[
+        {
+          public_id: {
+            type: String,
+            required: true,
+          },
+          url: {
+            type: String,
+            required: true,
+          }
         }
-      }, //file
+
+      ],
+        
+       //file
       description:{
         type:String
       },

@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors';
 import { DialogActions, DialogContent, DialogContentText } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
+import { fetchCourse } from 'src/API';
 
 const emails = ['username@gmail.com', 'user02@gmail.com','None',
 'Atria',
@@ -32,9 +33,26 @@ const emails = ['username@gmail.com', 'user02@gmail.com','None',
 
 
 
-export default function CourseDialog({props}) {
-  const [open, setOpen] = React.useState(true);
-  const [loading ,setLoading]=React.useState(false)
+export default function CourseDialog({props,open ,setOpen}) {
+  
+  const [loading ,setLoading]=React.useState(true);
+  const [courseList,setCourseList]=React.useState(null)
+  React.useEffect(() => {
+    async function datafetch()
+    {
+      await fetchCourse().then((res)=>{
+        console.log(res)
+        setCourseList(res.data);
+        setLoading(false)
+        console.log(courseList)
+
+      }).catch((err)=>alert(err.response.data.error.message))
+    }
+    datafetch();
+    console.log(courseList)
+    
+  },[]);
+  
 
   return (
     <div>
@@ -57,17 +75,17 @@ export default function CourseDialog({props}) {
         <DialogContent dividers>
         <List sx={{ pt: 0 }}>
         {
-            loading==true ? <p>loading....</p>
+            loading===true ? <p>loading....</p>
              :
-            emails.map((email) => (
+            courseList.map((item) => (
         
-                <ListItem component={RouterLink}  to={`/${props}/1`}  key={email}>
+                <ListItem component={RouterLink}  to={`/${props}/${item._id}`}  key={item._id}>
                   <ListItemAvatar>
-                  <Avatar style={{ backgroundColor:"orange",margin:'10px' }} >{email.charAt(0)}</Avatar>        
+                  <Avatar style={{ backgroundColor:"orange",margin:'10px' }} >{item.courseName.charAt(0)}</Avatar>        
                   
                     
                   </ListItemAvatar>
-                  <ListItemText primary={email} />
+                  <ListItemText primary={item.courseName} />
                 </ListItem>
                
               ))
