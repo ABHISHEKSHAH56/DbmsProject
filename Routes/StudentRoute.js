@@ -13,6 +13,7 @@ router.get("/listAssociatedcourse",verifyAccessToken,authCheck,StudentController
 
 //student can join the course by self and remove from course 
 
+router.get("/course/all",verifyAccessToken,authCheck,StudentController.ALLcourse)
 router.get("/course/join/:courseId",verifyAccessToken,authCheck,StudentController.joincourse)
 router.get("/course/:courseId",verifyAccessToken,authCheck,StudentController.getdeatilsofcourse)
 router.post("/assigment/submission/:assigmentId",verifyAccessToken,authCheck,assigmentController.submittheAssigment)

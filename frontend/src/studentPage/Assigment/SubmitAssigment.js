@@ -12,11 +12,13 @@ import { Form } from 'formik';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import { createAssigment, submitAssigment } from 'src/API';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAlert } from 'react-alert';
 
 export default function AssigmentSubmission() {
     let { assigmentId } = useParams();
+    const navigation=useNavigate()
+    const alert =useAlert()
     const [open, setOpen] = useState(true);
     const [images, setImages] = useState([]);    
     const [Assigment, setAssigment] = useState({})
@@ -25,12 +27,12 @@ export default function AssigmentSubmission() {
         Assigment["material"]=images
         await submitAssigment(Assigment,assigmentId ).then((res)=>{
           console.log(res)
-          alert.success("Assigment Created")
-
+          alert.success("Assigment Submited")
           setOpen(false)
+          navigation.pop()
         }).catch((err)=>{
-          console.log(err.response.data.error)
-          alert.error(err.response.data.error.message)
+          console.log(err.response)
+          alert.error(err.response)
         })
     }
   

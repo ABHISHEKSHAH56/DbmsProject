@@ -15,7 +15,7 @@ router.post("/register",verifyAccessToken,authCheck,FacutlyController.register)
 router.get("/course/fetch",verifyAccessToken,authCheck,adminCheck,courseController.fetchcoursebyfaculty)
 router.post("/course/create",verifyAccessToken,authCheck,adminCheck, courseController.register)
 router.delete("/course/:courseId",verifyAccessToken,authCheck,adminCheck,courseController.DeleteCourse)
-router.get("/course/:courseId",verifyAccessToken,authCheck,adminCheck,studentController.getdeatilsofcourse);
+router.get("/course/:courseId",verifyAccessToken,authCheck,studentController.getdeatilsofcourse);
 router.patch("/course/:courseId",verifyAccessToken,authCheck,adminCheck,courseController.updateCourse)
 
 //faculty can create the assigment and update the assigment 

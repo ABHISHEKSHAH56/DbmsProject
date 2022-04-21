@@ -14,6 +14,7 @@ import StudentForm from './sections/authentication/register/StudentRegister';
 import Registeration2 from './pages/Registeration2';
 import Course from './pages/Course/Course';
 import CourseStudent from './pages/CourseStudent';
+import StudentCourse from './studentPage/Course/Course'
 import CourseAssigment from './pages/Assigment/CourseAssigment';
 import AssigmentStudentTable from './pages/AssigmentListSubmission';
 import { useMemo } from 'react';
@@ -21,7 +22,9 @@ import Assigment from './pages/Assigment';
 import Student from './pages/Students';
 import StudentList from './pages/Students/StudentList';
 import Submiteddashboard from './pages/Assigment/Submiteddashboard';
-import AssigmentSubmission from './pages/Assigment/SubmitAssigment';
+import CourseStudentAssigment from './studentPage/Assigment/CourseAssigment';
+import AllCourse from './studentPage/Course/AllCourse';
+import AssigmentSubmission from './studentPage/Assigment/SubmitAssigment';
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +40,25 @@ const teacherRoute={
     {path: 'assigment/:courseId', element: <CourseAssigment />},
     {path: 'assigment/:courseId/:assigmentId', element: <AssigmentStudentTable />},
     {path: 'assigment/details/:assigmentId', element: <Submiteddashboard />},
-    {path: 'assigment/submission/:assigmentId', element: <AssigmentSubmission />},
+    {path: 'student/:courseId', element: <StudentList  />},
+    { path: '404', element: <NotFound /> },
+    { path: '*', element: <Navigate to="/404"  /> }
+  ]
+}
+
+
+const studentRoute={
+  path: '/',
+  element: <DashboardLayout />,
+  children: [
+    { path: '/', element: <Navigate to="/course" /> },
+    { path: 'dashbord', element: <DashboardApp /> },
+    { path: 'course', element: <StudentCourse /> },   
+    { path: 'all/course', element: <AllCourse /> },   
+    { path: 'assigment', element: <Assigment /> },
+    {path: 'assigment/:courseId', element: <CourseStudentAssigment />},
+    {path: 'assigment/:courseId/:assigmentId', element: <AssigmentStudentTable />},
+    {path: 'assigment/submission/:assigmentId', element: <AssigmentSubmission />},    
     {path: 'student/:courseId', element: <StudentList  />},
     { path: '404', element: <NotFound /> },
     { path: '*', element: <Navigate to="/404"  /> }
@@ -54,7 +75,7 @@ export default function Router({role}) {
         case "faculty":
             return [defaultRoute,teacherRoute];
         case "student":
-            return [defaultRoute,teacherRoute];
+            return [defaultRoute,studentRoute];
         default:
             return [defaultRoute];
     }

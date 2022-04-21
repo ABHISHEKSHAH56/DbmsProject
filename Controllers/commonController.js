@@ -57,8 +57,19 @@ module.exports = {
     },
     ListOfcourseAssigment:async(req,res,next)=>{
         try {
+            let result;
             const data=await Assigment.find({courseId:req.params.courseId});
-            res.send({assigmentData:data})
+            if(req.user.role=="student") {
+                const student=await studentModal.findOne({studentId:req.user._id})
+                result=data.filter((item)=>item.status!=="Draft")
+                result=result.map((item)=>{
+                    return {...item._doc,submissionDetails:item.submissionDetails.filter((data)=>data.student.toString()===student._id.toString())}
+                    
+                })
+            }
+            else result=data;
+            console.log(result)
+            res.send({assigmentData:result})
         } catch (error) {
             next(error)
         }

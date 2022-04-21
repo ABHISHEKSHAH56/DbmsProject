@@ -69,6 +69,7 @@ export const StudentRegister = async (formdata) => await Protected.post('/studen
 export const FacultyRegister = async (formdata) => await Protected.post('/faculty/register', formdata)
 
 export const fetchallcourse=async()=>await API.get("/all/course")
+
 export const fetchCourse=async() =>await Protected.get("/faculty/course/fetch")
 export const createCourse=async(data) =>await Protected.post("/faculty/course/create",data)
 export const deleteCourse=async(id)=>await Protected.delete(`/faculty/course/${id}`)
@@ -77,11 +78,12 @@ export const detailsCourse=async(id)=>await Protected.get(`/faculty/course/${id}
 
 
 //assigment
-
+export const fetchUnenrolled=async()=> await Protected.get("/student/course/all")
+export const joinedthecourse=async(id)=>await Protected.get(`/student/course/join/${id}`)
 export const createAssigment=async(data,id) =>await Protected.post(`/faculty/${id}/assigment/create`,data)
 export const fetchAllAssigmen=async(id) =>await Protected.get(`/all/assigment/${id}`)
 export const detailsAssigment=async(id)=>await Protected.get(`/faculty/assigment/details/${id}`)
 
 //sumit the assigment
 export const submitAssigment=async(data,id)=>await Protected.post(`/student/assigment/submission/${id}`,data)
-
+export const fetchStudentCourse=async()=>await Protected.get('/student/listAssociatedcourse')

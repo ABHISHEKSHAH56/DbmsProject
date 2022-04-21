@@ -52,15 +52,16 @@ module.exports = {
         try {
             //list of all course of that student they are joined 
             //for reducing complexity we fill find the that course that through batch then filter which of them they joined 
-            const {batch}=await Student.findOne({studentId:req.user._id})
-            const course= await courseModal.find({batch:batch})
+            const student=await Student.findOne({studentId:req.user._id})
+            const course= await courseModal.find({batch:student.batch})
             
-            console.log(batch,course);
+            
             //course ki deatils aa gyi 
-            course.filter((item)=>{
-                return item.students.includes(`${req.user._id}`);
+            const data=course.filter((item)=>{
+                return item.students.includes(student._id);
             })
-            res.send(course);
+            console.log(data.length)
+            res.send(data);
             //assigment ki deatils be ssath me hi bejh denege
             
         } catch (error) {
@@ -116,6 +117,20 @@ module.exports = {
         try {
             const course = await courseModal.findById(req.params.courseId).populate({ path: 'students' })
             res.send(course)
+            
+        } catch (error) {
+            next(error)
+            
+        }
+    },
+    ALLcourse:async(req,res,next)=>{
+        try {
+            const student= await Student.findOne({studentId:req.user._id})
+            const course= await  courseModal.find({batch:student.batch})
+
+            const data =course.filter((data)=>!data.students.includes(student._id))
+            console.log(course.length,data.length)
+            res.send(data);
             
         } catch (error) {
             next(error)

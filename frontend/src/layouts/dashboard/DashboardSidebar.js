@@ -15,6 +15,7 @@ import NavSection from '../../components/NavSection';
 //
 import sidebarConfig from './SidebarConfig';
 import { authContext } from 'src/hooks/AuthContext';
+import sidebarUserConfig from './studentNavbar';
 
 // ----------------------------------------------------------------------
 
@@ -82,7 +83,12 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         </Link>
       </Box>
 
-      <NavSection navConfig={sidebarConfig} />
+      {
+        auth.data.role==="student" ? 
+        <NavSection navConfig={sidebarUserConfig} />
+        :
+        <NavSection navConfig={sidebarConfig} />
+      }
 
       <Box sx={{ flexGrow: 1 }} />
 
